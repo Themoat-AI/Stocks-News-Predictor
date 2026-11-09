@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101722">
+  <title>Market Signal — News Impact</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Market Signal home"><span class="brand-mark">M</span><span>market<span class="brand-light">signal</span></span></a>
+    <div class="top-actions"><span class="live-dot"></span><span id="status">Demo headlines</span><a class="button button-small" href="https://github.com/Themoat-AI/Stocks-News-Predictor/archive/refs/heads/main.zip">Download extension</a></div>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div><p class="eyebrow">MARKET NEWS INTELLIGENCE</p><h1>Know what’s moving<br>the market.</h1><p class="subhead">A transparent, math-based signal for every headline. Rank stories by potential market impact and see the estimated direction at a glance.</p></div>
+      <div class="hero-card"><div class="hero-card-label">TOP STORY SIGNAL</div><div class="hero-score" id="hero-score">—</div><div class="hero-card-foot"><span id="hero-direction">Waiting for stories</span><span class="score-caption">/ 100</span></div><div class="meter"><span id="hero-meter"></span></div></div>
+    </section>
+    <section class="controls panel">
+      <div class="control-head"><div><h2>News feed</h2><p>Connect a free Finnhub API token to load current headlines.</p></div><span class="feed-badge"><span class="live-dot"></span><span id="feed-mode">DEMO MODE</span></span></div>
+      <form id="token-form" class="token-form"><label for="api-token">Finnhub API token</label><input id="api-token" type="password" placeholder="Paste your token" autocomplete="off"><button class="button" type="submit">Connect feed</button><button class="button button-quiet" type="button" id="demo-button">Use demo</button></form>
+      <p class="helper">Your token is stored only in this browser. <a href="https://finnhub.io/register" target="_blank" rel="noopener">Get a free token</a>. <button class="text-button" id="refresh-button" type="button">Refresh headlines</button></p>
+    </section>
+    <section class="summary-row" aria-label="Market news summary">
+      <div class="summary-card"><span class="summary-label">STORIES ANALYZED</span><strong id="story-count">0</strong><span>in this feed</span></div>
+      <div class="summary-card"><span class="summary-label">HIGH IMPACT</span><strong id="high-count">0</strong><span>impact score ≥ 65</span></div>
+      <div class="summary-card"><span class="summary-label">BULLISH SIGNALS</span><strong id="bull-count" class="positive">0</strong><span>estimated direction</span></div>
+      <div class="summary-card"><span class="summary-label">BEARISH SIGNALS</span><strong id="bear-count" class="negative">0</strong><span>estimated direction</span></div>
+    </section>
+    <section class="stories-section">
+      <div class="section-heading"><div><p class="eyebrow">THE NEWS THAT MATTERS</p><h2>Top market stories</h2></div><div class="filters"><label class="sr-only" for="direction-filter">Filter by direction</label><select id="direction-filter"><option value="all">All signals</option><option value="bullish">Bullish</option><option value="bearish">Bearish</option><option value="neutral">Neutral</option></select><label class="sr-only" for="sort-select">Sort stories</label><select id="sort-select"><option value="impact">Highest impact</option><option value="recent">Most recent</option></select></div></div>
+      <div id="story-list" class="story-list" aria-live="polite"></div>
+      <div id="empty-state" class="empty-state" hidden><span>◎</span><h3>No matching stories</h3><p>Try a different filter or refresh the news feed.</p></div>
+    </section>
+    <section class="method panel"><div class="method-icon">ƒx</div><div><h2>How the signal works</h2><p>Each headline gets a <strong>direction score (−100 to +100)</strong> and a separate <strong>impact score (0–100)</strong>. The transparent heuristic weighs financial relevance, catalyst strength, language-based sentiment, and recency. High-impact stories rank first; the score is an estimate, not a price forecast.</p></div></section>
+    <footer><span>Market Signal · Educational tool, not investment advice.</span><a href="https://github.com/Themoat-AI/Stocks-News-Predictor">Source &amp; extension</a></footer>
+  </main>
+  <script src="scoring.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

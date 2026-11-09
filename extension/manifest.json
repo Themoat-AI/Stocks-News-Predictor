@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Market Signal — News Impact",
+  "version": "1.0.0",
+  "description": "Score and rank market news headlines with transparent heuristic signals.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://finnhub.io/*"],
+  "action": {
+    "default_title": "Market Signal",
+    "default_popup": "popup.html"
+  }
+}
