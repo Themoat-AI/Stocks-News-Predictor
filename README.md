@@ -1,31 +1,50 @@
 # Market Signal — Stocks News Predictor
 
-A small browser-based dashboard that ranks general financial headlines using a transparent heuristic. It includes a Manifest V3 Chromium extension in `extension/`.
+A news-impact dashboard with a transparent headline scoring heuristic, a Streamlit app, and a Manifest V3 Chromium browser extension.
 
-## Run the web app
+## Deploy on Streamlit Community Cloud
 
-Open `index.html` in a browser, or serve this folder with any static web server. The app starts with illustrative demo headlines. To load current headlines, create a free [Finnhub](https://finnhub.io/register) account, enter your API token, and select **Connect feed**. The browser stores the token locally; it is sent to Finnhub only when requesting its news endpoint.
+1. Push this repository to GitHub (the Streamlit app entrypoint is `streamlit_app.py`).
+2. In [Streamlit Community Cloud](https://share.streamlit.io/), select **Create app**, choose this repository and branch, and set **Main file path** to `streamlit_app.py`.
+3. Deploy. The app starts with illustrative demo headlines; no API key is required to try it.
+4. For current news, create a free [Finnhub](https://finnhub.io/register) token. Enter it in the app sidebar, or add it in the Streamlit app's **Settings → Secrets** as:
 
-## Install the browser extension (Chrome / Edge)
+   ```toml
+   FINNHUB_API_KEY = "your-finnhub-token"
+   ```
 
-1. Download this repository as a ZIP and extract it, or clone the repository.
+   The app uses the token only to request Finnhub's general-news endpoint. `requirements.txt` contains the Python dependencies installed by Streamlit Cloud.
+
+## Run locally
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+pip install -r requirements.txt
+streamlit run streamlit_app.py
+```
+
+You can enter a Finnhub token in the sidebar, or set `FINNHUB_API_KEY` in `.streamlit/secrets.toml` to use it by default. Never commit real API keys to GitHub.
+
+## Browser extension (Chrome / Edge)
+
+1. Download this repository as a ZIP and extract it.
 2. Open `chrome://extensions` (or `edge://extensions`) and enable **Developer mode**.
 3. Choose **Load unpacked** and select the `extension/` folder.
-4. Open the extension, enter a Finnhub API token to load current general headlines, or leave it blank to see demo headlines.
+4. Enter a Finnhub token in the extension to load current general headlines, or use the demo headlines.
 
-To distribute the extension as a ZIP, zip the contents of the `extension/` directory (the `manifest.json` file must be at the ZIP root). Chromium-based browsers can load the extracted extension directory in developer mode. This repository does not yet publish a signed Chrome Web Store package.
+To distribute a ZIP for Chromium-based browsers, zip the contents of `extension/` so `manifest.json` is at the ZIP root. A signed Chrome Web Store package is not published by this repository.
 
-## How scoring works
+## Scoring and limitations
 
-Each headline is assigned:
+Each headline receives an **impact score (0–100)** based on market relevance (34%), catalyst terms (30%), language strength (25%), and recency (11%), plus a **direction score (−100 to +100)** derived from a positive/negative keyword balance. Scores at or above +18 are bullish, at or below −18 bearish, and otherwise neutral.
 
-- **Impact (0–100):** weighted combination of market relevance (34%), catalyst terms (30%), language strength (25%), and recency (11%).
-- **Direction (−100 to +100):** a simple positive/negative keyword balance, normalized with a tanh curve; values at or above +18 are bullish, values at or below −18 bearish, and the rest neutral.
-
-These are explainable text heuristics, not a trained forecasting model or verified predictions of stock-price movement. They can miss context, irony, company-specific implications, and breaking developments. They are for informational/educational use only—not investment advice. Demo headlines and their scores are illustrative, not live news.
+These are explainable text heuristics—not a trained forecasting model or verified predictions of stock-price movement. They can miss context, irony, company-specific implications, and breaking developments. They are for informational/educational use only, not investment advice.
 
 ## Project files
 
-- `index.html`, `styles.css`, `app.js`: responsive dashboard.
-- `scoring.js`: shared scoring functions.
-- `extension/`: Manifest V3 popup extension.
+- `streamlit_app.py`: Streamlit deployment entrypoint.
+- `requirements.txt`: Python app dependencies.
+- `index.html`, `styles.css`, `app.js`: static web dashboard.
+- `scoring.js`: JavaScript scoring functions shared with the extension.
+- `extension/`: Manifest V3 browser extension.
